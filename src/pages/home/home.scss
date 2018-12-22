@@ -1,0 +1,59 @@
+.home {
+    
+    scroll-content {
+        display: flex;
+        flex-direction: auto;
+    }
+ 
+    ion-grid {
+        padding: 0;
+        //height: 100vh;
+    }
+ 
+    ion-row {
+        flex: 2;
+        align-content: center;
+    }
+ 
+    ion-slide img {
+       height: 8vh !important;
+       width: auto !important;
+       padding-right: 10px;
+     }
+    ion-slide .clock {
+       font-size: 48px;
+       font-style: bold;
+       color: white;
+     }
+    ion-slide p {
+       font-size: 20px;
+       font-style: bold;
+     }
+    ion-slide{
+        ion-col {
+            padding: 0px,0px;
+            font-size: 16px;
+            font-style: bold;
+            text-align: center;
+            height:50vh;
+        }
+    }
+
+    ion-slide{
+        ion-row {
+            text-align: center;
+        }
+    }
+    ion-slide{
+        height: 100vh;
+    }
+
+    .expand-wrapper {
+        transition: 0.2s linear;
+    }   
+
+    .collapsed {
+        height: 0 !important;
+    }
+
+}

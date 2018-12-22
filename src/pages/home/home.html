@@ -1,0 +1,197 @@
+<ion-content class="home">
+  
+  <ion-segment [(ngModel)]="query" (ionChange)="showdata()">
+  </ion-segment> 
+
+    <ion-slides (ionSlideDrag)="slideChanged()" initialSlide=1 pager>
+      <ion-slide>  
+       <ion-grid>
+          <ion-row >
+            
+            <ion-col (dblclick)= 'setting()' style="background-color:#daa220;"> 
+              <ion-buttons end>
+              <img src="assets/icon/tvd.png"/> 
+              </ion-buttons>            
+              <p> Previous Meeting </p>
+                   <p > {{thisday}}</p>
+                   <p class="clock"> </p>  
+
+            </ion-col>
+          </ion-row>
+           <ion-row>
+          <ion-col style="background-color:#daa344;">
+            <ion-content style="background-color:#daa344;">
+               <div *ngIf = "check">
+                 <div *ngFor = "let past of past, let i=index" text-wrap (click)="toggleLevel1('idx'+i)" [ngClass]="{active: isLevel1Shown('idx'+i)}">
+                  {{past.title}}
+                  <ion-icon color="success" item-right [name]="isLevel1Shown('idx'+i) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
+                  <div *ngIf="isLevel1Shown('idx'+i)">
+                  
+                    <h6>
+                    {{todayDate(past.start_time)}}<br>
+                    Start-time: {{getTime(past.start_time)}} <br>
+                    End-time: {{getTime(past.end_time)}}<br>
+                    Created By: {{past.name}}
+                    </h6>
+                  </div>  
+                </div>
+              </div> 
+              <div *ngFor="let p of pastRev; let i=index" text-wrap (click)="toggleLevel1('idx'+i)" [ngClass]="{active: isLevel1Shown('idx'+i)}">
+                <div *ngIf = 'i<10'>
+                  <h5>
+                    Meeting Title: {{p.subject}}
+                    <ion-icon color="success" item-right [name]="isLevel1Shown('idx'+i) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
+                  </h5>
+                  <div *ngIf="isLevel1Shown('idx'+i)">
+                    
+                      <h6>
+                      {{todayDate(p.start_time)}}<br>
+                      Start-time: {{getTime(p.start_time)}} <br>
+                      End-time: {{getTime(p.end_time)}}<br>
+                      Created By: {{p.from}}
+                      </h6>
+            
+                  </div>
+                </div>
+              </div>
+            </ion-content>
+          </ion-col>
+        </ion-row>
+        </ion-grid>
+      </ion-slide>
+      <ion-slide>  
+        <ion-grid>
+          <ion-row >
+            
+            <ion-col (dblclick)= 'setting()' style="background-color:#a0db7e;">            
+                    
+              <ion-buttons end>
+              <img src="assets/icon/tvd.png"/> 
+              </ion-buttons>   
+              <p> Room Status </p>
+              <p> {{thisday}}</p>
+              <p class="clock"> </p>  
+
+            </ion-col>
+          </ion-row>
+           <ion-row>
+          <ion-col style="background-color:#a0db8e;">  
+             <!-- <ion-buttons end >
+                <button (click)="setting()" style="background-color:#a0db8e;">   
+                  <img src="assets/icon/newset.png" width="30px" height="30px"/>
+                </button>
+              </ion-buttons>  -->
+           <p id="avail"> Available </p>
+            <h5 id="currentTitle">  </h5>
+            <h5 id="currentTime"> </h5>
+            <h6 id="currentName">  </h6>
+
+            <div id="remaining">
+            </div>
+            <div *ngIf = 'booking'>
+              <button ion-button (click)="showBooking()"> Book Room</button>
+           </div>
+          </ion-col>
+        </ion-row>
+        </ion-grid>
+      </ion-slide>
+      <ion-slide>  
+      <ion-grid>
+          <ion-row >
+            
+            <ion-col (dblclick)= 'setting()' style="background-color:#daa220;">            
+                    
+              <ion-buttons end>
+              <img src="assets/icon/tvd.png"/> 
+              </ion-buttons>   
+              <p> Next Meeting </p>
+              <p > {{thisday}}</p>
+              <p class="clock"> </p>  
+
+            </ion-col>
+          </ion-row>
+           <ion-row>
+          <ion-col style="background-color:#daa550;">   
+           <!-- <p id="nextTitle"> </p>
+           <p id = "nextDay"></p>
+            <h5 id="nextTime"> </h5>
+            <h6 id="nextName"> </h6> -->
+                
+             <div *ngFor = "let n of dataRev, let i=index" text-wrap (click)="toggleLevel1('idx'+i)" [ngClass]="{active: isLevel1Shown('idx'+i)}">
+                 <h5> {{n.subject}}
+                  <ion-icon color="success" item-right [name]="isLevel1Shown('idx'+i) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
+                 </h5>
+                  <div *ngIf="isLevel1Shown('idx'+i)">
+                  
+                    <h6>
+                    {{todayDate(n.start_time)}}<br>
+                    Start-time: {{getTime(n.start_time)}} <br>
+                    End-time: {{getTime(n.end_time)}}<br>
+                    Created By: {{n.from}}
+                    </h6>
+                  </div> 
+            </div> 
+          </ion-col>
+        </ion-row>
+        </ion-grid>
+      </ion-slide>
+      <ion-slide>  
+      <ion-grid>
+          <ion-row >
+            
+            <ion-col (dblclick)= 'setting()' style="background-color:#a0db7e;">            
+                    
+              <ion-buttons end>
+              <img src="assets/icon/tvd.png"/> 
+              </ion-buttons>   
+              <p> Future Meeting </p>
+              <p > {{thisday}}</p>
+              <p class="clock"> </p>  
+
+            </ion-col>
+          </ion-row>
+           <ion-row>
+          <ion-col style="background-color:#a0db8e">
+            <ion-content style="background-color:#a0db8e;">
+              <div *ngIf = "check">
+                 <div *ngFor = "let future of future, let i=index" text-wrap (click)="toggleLevel1('idx'+i)" [ngClass]="{active: isLevel1Shown('idx'+i)}">
+                  {{future.title}}
+                  <ion-icon color="success" item-right [name]="isLevel1Shown('idx'+i) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
+                  <div *ngIf="isLevel1Shown('idx'+i)">
+                    <h6>
+                    {{todayDate(future.start_time)}}<br>
+                    Start-time: {{getTime(future.start_time)}} <br>
+                    End-time: {{getTime(future.end_time)}}<br>
+                    Created By: {{future.name}}
+                    </h6>
+                  
+                  </div>
+                </div> 
+              </div> 
+              
+              <div *ngFor="let k of futureRev; let i=index" text-wrap (click)="toggleLevel1('idx'+i)" [ngClass]="{active: isLevel1Shown('idx'+i)}">
+                <div *ngIf = 'i<10'>
+                    <h5>
+                    Meeting Title: {{k.subject}}
+                    <ion-icon color="success" item-right [name]="isLevel1Shown('idx'+i) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
+                  </h5>
+                  <div *ngIf="isLevel1Shown('idx'+i)">
+                    
+                      <h6>
+                      {{todayDate(k.start_time)}}<br>
+                      Start-time: {{getTime(k.start_time)}} <br>
+                      End-time: {{getTime(k.end_time)}}<br>
+                      Created By: {{k.from}}
+                      </h6>
+                
+                  </div>
+                </div>
+              </div>
+            </ion-content>
+          </ion-col>
+        </ion-row>
+        </ion-grid>
+      </ion-slide>
+           
+    </ion-slides>
+</ion-content>
